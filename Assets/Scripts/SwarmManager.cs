@@ -15,6 +15,7 @@ public class SwarmManager : MonoBehaviour
     [SerializeField] private float stepTime;
     [SerializeField] private float leftBoundaryX;
     [SerializeField] private float rightBoundaryX;
+    private int movingDirection = 1; // 1 = right, -1 = left
 
     private void Start()
     {
@@ -49,17 +50,37 @@ public class SwarmManager : MonoBehaviour
     // attributes/parameters.
     private void GenerateSwarm()
     {
-        // Write code here...
+        for(int row=0; row<enemyRows; row++)
+        {
+            for(int col=0; col<enemyCols; col++)
+            {
+                GameObject enemyCube = Instantiate(enemyTemplate, gameObject.transform);
+                enemyCube.transform.localPosition = new Vector3(enemySpacing/2 + col * enemySpacing, 0, row * enemySpacing);
+                
+
+            }
+        }
     }
 
     // Step the swarm across the screen, based on the current direction, or down
     // and reverse when it reaches the edge.
     private void StepSwarm()
     {
-        // Write code here...
-        
+
         // Tip: You probably want a private variable to keep track of the
         // direction the swarm is moving. You could alternate this between 1 and
         // -1 to serve as a vector multiplier when stepping the swarm.
+        var width = (enemyCols-1) * enemySpacing;
+        if (((transform.localPosition.x + width + stepSize > rightBoundaryX) && movingDirection == 1) || ((transform.localPosition.x < leftBoundaryX) && movingDirection == -1))
+        {
+            transform.localPosition = transform.localPosition + (new Vector3(0, 0, -stepSize));
+            movingDirection = movingDirection * -1;
+        }
+        else
+        {
+            transform.localPosition = transform.localPosition + (new Vector3(movingDirection * stepSize, 0, 0));
+        }
+        //transform.position = transform.position + (new Vector3(movingDirection * stepSize, 0, 0));
+
     }
 }

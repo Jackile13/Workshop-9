@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
         // triggered on the frame where the key is initially pressed.
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Write your code to fire a projectile here...
+            var bullet = Instantiate(projectilePrefab);
+            bullet.transform.localPosition = transform.localPosition;
         }
     }
 }
